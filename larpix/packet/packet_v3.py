@@ -97,6 +97,7 @@ class Packet_v3(object):
 
     def __init__(self, bytestream=None):
         self._int = None
+        self.float_charge = None
         if bytestream is None:
             self.bits = bitarray(self.size,endian=self.endian)
             self.bits.setall(False)
@@ -205,7 +206,7 @@ class Packet_v3(object):
         elif ptype == self.DATA_PACKET:
             d['channel_id'] = self.channel_id
             d['timestamp'] = self.timestamp
-            d['dataword'] = self.dataword
+            d['dataword'] = self.float_charge if self.float_charge is not None else self.dataword
             d['trigger_type'] = self.trigger_type
             d['local_fifo'] = self.local_fifo
             d['shared_fifo'] = self.shared_fifo

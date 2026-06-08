@@ -481,7 +481,7 @@ dtypes['3.0'] = {  # compatible with v3 packets and timestamp packets only
         ('valid_parity', 'u1'),
         ('channel_id', 'u1'),
         ('timestamp', 'u8'),
-        ('dataword', 'u2'),
+        ('dataword', 'f8'),
         ('trigger_type', 'u1'),
         ('local_fifo', 'u1'),
         ('shared_fifo', 'u1'),
@@ -876,7 +876,7 @@ def _parse_packets_v3_0(row, message_dset, *args, **kwargs):
         if p.packet_type == Packet_v3.DATA_PACKET:
             p.channel_id = row['channel_id']
             p.timestamp = row['timestamp']
-            p.dataword = row['dataword']
+            p.float_charge = row['dataword']
             p.trigger_type = row['trigger_type']
             p.local_fifo = row['local_fifo']
             p.shared_fifo = row['shared_fifo']
