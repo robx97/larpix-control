@@ -899,7 +899,7 @@ def _format_packets_packet_v3_0(pkt, version='3.0', dset='packets', *args, **kwa
     encoded_packet = [0]*len(dtypes[version][dset])
     i = 0
     for value_name, value_type in dtypes[version][dset]:
-        if value_name == 'dataword' and hasattr(pkt, 'float_charge'):
+        if value_name == 'dataword' and getattr(pkt, 'packet_type', None) == 1:
             encoded_packet[i] = pkt.float_charge
         else:
             encoded_packet[i] = getattr(pkt, value_name, None)
