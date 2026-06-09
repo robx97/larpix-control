@@ -899,8 +899,14 @@ def _format_packets_packet_v3_0(pkt, version='3.0', dset='packets', *args, **kwa
     encoded_packet = [0]*len(dtypes[version][dset])
     i = 0
     for value_name, value_type in dtypes[version][dset]:
-        if value_name == 'dataword' and getattr(pkt, 'float_charge', None) is not None:
-            encoded_packet[i] = pkt.float_charge
+        if value_name == 'dataword':
+            #  check if it's a real physics data packet carrying our new attribute
+            float_val = getattr(pkt, 'float_charge', None)
+            if float_val is not None:
+                encoded_packet[i] = float_val
+            else:
+                # if it's a Timestamp/Sync/Message packet, fall back to standard int dataword
+                encoded_packet[i] = getattr(pkt, 'dataword', 0)
         else:
             encoded_packet[i] = getattr(pkt, value_name, None)
         if encoded_packet[i] is None:
