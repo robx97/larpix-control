@@ -899,7 +899,10 @@ def _format_packets_packet_v3_0(pkt, version='3.0', dset='packets', *args, **kwa
     encoded_packet = [0]*len(dtypes[version][dset])
     i = 0
     for value_name, value_type in dtypes[version][dset]:
-        encoded_packet[i] = getattr(pkt, value_name, None)
+        if value_name == 'dataword':
+            encoded_packet[i] = pkt.float_charge 
+        else:
+            encoded_packet[i] = getattr(pkt, value_name, None)
         if encoded_packet[i] is None:
             if value_name == 'valid_parity' and hasattr(pkt, 'has_valid_parity'):
                 encoded_packet[i] = pkt.has_valid_parity()
@@ -1244,7 +1247,7 @@ def to_file(filename, packet_list=None, chip_list=None, mode='a', version=None, 
 4: 'timestamp',
 5: 'message',
 6: 'sync',
-7: 'trigger,
+7: 'trigger',
 '''
                 else:
                     packet_dset.attrs['packet_types'] = '''
